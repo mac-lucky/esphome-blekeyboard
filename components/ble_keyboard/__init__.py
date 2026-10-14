@@ -26,6 +26,11 @@ from esphome.const import (
 from esphome.core import CORE, ID
 from esphome.cpp_generator import LambdaExpression, MockObj, TemplateArguments
 
+try:
+    from esphome.components.esp32 import include_builtin_idf_component
+except ImportError:  # older ESPHome builds every IDF component
+    include_builtin_idf_component = None
+
 from .const import (
     ACTION_COMBINATION_CLASS,
     ACTION_PRESS_CLASS,
@@ -83,6 +88,11 @@ async def to_code(config: dict) -> None:
 
     if not CORE.using_arduino:
         raise cv.Invalid("The component only supports the Arduino framework.")
+
+    # ESPHome builds Arduino on top of its ESP-IDF build and leaves the IDF
+    # Bluetooth component out unless a component asks for it; NimBLE needs it.
+    if include_builtin_idf_component is not None:
+        include_builtin_idf_component("bt")
 
     var = cg.new_Pvariable(
         config[CONF_ID],

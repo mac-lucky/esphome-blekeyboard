@@ -4,6 +4,34 @@
 
 Custom [esphome](https://esphome.io/) component to implement a virtual BLE keyboard.
 
+## About this fork
+
+Fork of [dmamontov/esphome-blekeyboard](https://github.com/dmamontov/esphome-blekeyboard),
+which stopped building on current ESPHome. Tested with ESPHome 2026.9.1 on an ESP32 with the
+Arduino framework. Changes:
+
+- `play()` in the actions takes `const Ts &...x`, the signature ESPHome uses now.
+- `set_timeout()` and `cancel_timeout()` get the log tag as `const char *`; ESPHome 2026.7
+  removed the `std::string` overloads.
+- The component asks ESPHome to build the ESP-IDF `bt` component. ESPHome 2026.9 builds
+  Arduino on top of ESP-IDF and leaves `bt` out unless a component requests it, which broke
+  NimBLE with `esp_bt.h: No such file or directory`.
+- NimBLE-Arduino 1.4.3 instead of 1.4.0, and the keyboard library comes from
+  [mac-lucky/ESP32-BLE-Keyboard](https://github.com/mac-lucky/ESP32-BLE-Keyboard), whose
+  `library.json` declares the NimBLE-Arduino dependency. ESPHome reads library dependencies
+  only from `library.json`, and upstream ships just `library.properties`.
+
+Pin a commit when you use it:
+
+```yaml
+external_components:
+  - source:
+      type: git
+      url: https://github.com/mac-lucky/esphome-blekeyboard
+      ref: <commit sha>
+    components: [ble_keyboard]
+```
+
 ## More info
 
 - [Base configuration](https://github.com/dmamontov/esphome-blekeyboard/wiki/Base-configuration)

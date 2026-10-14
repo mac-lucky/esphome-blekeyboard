@@ -14,7 +14,7 @@ template<typename... Ts> class Esp32BleKeyboardPrintAction : public Action<Ts...
   explicit Esp32BleKeyboardPrintAction(Esp32BleKeyboard *ble_keyboard) : ble_keyboard_(ble_keyboard) {}
   TEMPLATABLE_VALUE(std::string, text)
 
-  void play(Ts... x) override { this->ble_keyboard_->press(this->text_.value(x...)); }
+  void play(const Ts &...x) override { this->ble_keyboard_->press(this->text_.value(x...)); }
 
  protected:
   Esp32BleKeyboard *ble_keyboard_;
@@ -25,7 +25,7 @@ template<typename... Ts> class Esp32BleKeyboardPressAction : public Action<Ts...
   explicit Esp32BleKeyboardPressAction(Esp32BleKeyboard *ble_keyboard) : ble_keyboard_(ble_keyboard) {}
   TEMPLATABLE_VALUE(uint8_t, code)
 
-  void play(Ts... x) override {
+  void play(const Ts &...x) override {
     if (keys_.size() > 1) {
       MediaKeyReport mediaKey = {keys_[0], keys_[1]};
 
@@ -46,7 +46,7 @@ template<typename... Ts> class Esp32BleKeyboardReleaseAction : public Action<Ts.
  public:
   explicit Esp32BleKeyboardReleaseAction(Esp32BleKeyboard *ble_keyboard) : ble_keyboard_(ble_keyboard) {}
 
-  void play(Ts... x) override { this->ble_keyboard_->release(); }
+  void play(const Ts &...x) override { this->ble_keyboard_->release(); }
 
  protected:
   Esp32BleKeyboard *ble_keyboard_;
@@ -57,7 +57,7 @@ template<typename... Ts> class Esp32BleKeyboardCombinationAction : public Action
   explicit Esp32BleKeyboardCombinationAction(Esp32BleKeyboard *ble_keyboard) : ble_keyboard_(ble_keyboard) {}
   TEMPLATABLE_VALUE(uint32_t, delay)
 
-  void play(Ts... x) override {
+  void play(const Ts &...x) override {
     uint32_t delay_ms = this->delay_.value(x...);
 
     for (std::string &key : keys_) {
@@ -89,7 +89,7 @@ template<typename... Ts> class Esp32BleKeyboardStartAction : public Action<Ts...
  public:
   explicit Esp32BleKeyboardStartAction(Esp32BleKeyboard *ble_keyboard) : ble_keyboard_(ble_keyboard) {}
 
-  void play(Ts... x) override { this->ble_keyboard_->start(); }
+  void play(const Ts &...x) override { this->ble_keyboard_->start(); }
 
  protected:
   Esp32BleKeyboard *ble_keyboard_;
@@ -99,7 +99,7 @@ template<typename... Ts> class Esp32BleKeyboardStopAction : public Action<Ts...>
  public:
   explicit Esp32BleKeyboardStopAction(Esp32BleKeyboard *ble_keyboard) : ble_keyboard_(ble_keyboard) {}
 
-  void play(Ts... x) override { this->ble_keyboard_->stop(); }
+  void play(const Ts &...x) override { this->ble_keyboard_->stop(); }
 
  protected:
   Esp32BleKeyboard *ble_keyboard_;

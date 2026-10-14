@@ -59,13 +59,15 @@ LIBS_DEFAULT: Final = [
 LIBS_ADDITIONAL: Final = [
     (
         "h2zero/NimBLE-Arduino",
-        "1.4.0",
+        "1.4.3",
         None,
     ),
+    # Fork of t-vk/ESP32 BLE Keyboard with a library.json that declares its
+    # NimBLE-Arduino dependency; ESPHome's library converter reads only that.
     (
-        "t-vk/ESP32 BLE Keyboard",
-        "0.3.2",
+        "ESP32 BLE Keyboard",
         None,
+        "https://github.com/mac-lucky/ESP32-BLE-Keyboard.git#cabc86ec1e1dc6a597e4937b88af094efb5e090b",
     ),
 ]
 
