@@ -16,6 +16,9 @@ Arduino framework. Changes:
 - The component asks ESPHome to build the ESP-IDF `bt` component. ESPHome 2026.9 builds
   Arduino on top of ESP-IDF and leaves `bt` out unless a component requests it, which broke
   NimBLE with `esp_bt.h: No such file or directory`.
+- `btInUse()` returns true, so arduino-esp32 keeps the Bluetooth controller memory at
+  startup. Without it `esp_bt_controller_init()` fails, NimBLE aborts and the device boot
+  loops into safe mode.
 - NimBLE-Arduino 1.4.3 instead of 1.4.0, and the keyboard library comes from
   [mac-lucky/ESP32-BLE-Keyboard](https://github.com/mac-lucky/ESP32-BLE-Keyboard), whose
   `library.json` declares the NimBLE-Arduino dependency. ESPHome reads library dependencies

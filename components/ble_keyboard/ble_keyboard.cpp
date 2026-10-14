@@ -10,6 +10,14 @@
 #include <string>
 #include <list>
 
+#ifdef USE_ARDUINO
+// arduino-esp32 frees the Bluetooth controller memory at startup unless a library
+// claims it, and NimBLE-Arduino 1.x does not. esp_bt_controller_init() then fails
+// with ESP_ERR_INVALID_STATE and NimBLEDevice::init() aborts, so the device boot
+// loops into safe mode. ESPHome's own esp32_ble component does the same.
+extern "C" bool btInUse() { return true; }  // NOLINT(readability-identifier-naming)
+#endif
+
 namespace esphome {
 namespace ble_keyboard {
 static const char *const TAG = "ble_keyboard";
